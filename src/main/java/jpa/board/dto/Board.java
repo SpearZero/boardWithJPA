@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Board {
@@ -20,6 +22,10 @@ public class Board {
 	
 	private LocalDateTime createdDate;
 	private LocalDateTime modifiedDate;
+
+	@ManyToOne
+	@JoinColumn(name = "id")
+	private Member member;
 	
 	public Long getSeq() {
 		return seq;
@@ -69,6 +75,15 @@ public class Board {
 		this.modifiedDate = modifiedDate;
 	}
 
+	public Member getMember() {
+		return member;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
+	}
+	
+	// 순환참조로 인한 Member 제거
 	@Override
 	public String toString() {
 		return "Board [seq=" + seq + ", title=" + title + ", content=" + content + ", writer=" + writer
