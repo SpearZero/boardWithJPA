@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+#index-content {
+	padding-top : 56px;
+	height : 100vh;
+}
+
+#board-content {
+	padding-top : 56px;
+}
