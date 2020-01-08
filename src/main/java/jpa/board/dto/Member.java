@@ -2,10 +2,12 @@ package jpa.board.dto;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Max;
 
 @Entity
 public class Member {
@@ -14,6 +16,7 @@ public class Member {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(unique = true, length = 15)
 	private String username;
 	private String password;
 	private LocalDateTime createdDate;
