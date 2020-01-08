@@ -8,3 +8,8 @@
 #board-content {
 	padding-top : 56px;
 }
+
+#signup-content {
+	padding-top : 56px;
+	height : 100vh;
+}

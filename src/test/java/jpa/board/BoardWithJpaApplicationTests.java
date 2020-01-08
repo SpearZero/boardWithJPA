@@ -1,6 +1,7 @@
 package jpa.board;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -38,32 +39,40 @@ class BoardWithJpaApplicationTests {
 //		}
 //	}
 	
+//	@Test
+//	public void memberBoardInsert() {
+//		Member member = new Member();
+//		member.setUsername("abcd123");
+//		member.setPassword("pass123");
+//		member.setCreatedDate(LocalDateTime.now());
+//		member.setModifiedDate(LocalDateTime.now());
+//		memberRepo.save(member);
+//		
+//		Board board1 = new Board();
+//		board1.setTitle("제목1");
+//		board1.setContent("내용1");
+//		board1.setCreatedDate(LocalDateTime.now());
+//		board1.setModifiedDate(LocalDateTime.now());
+//		board1.setWriter(member.getUsername());
+//		board1.setMember(member);
+//		boardRepo.save(board1);
+//		
+//		Board board2 = new Board();
+//		board2.setTitle("제목2");
+//		board2.setContent("내용2");
+//		board2.setCreatedDate(LocalDateTime.now());
+//		board2.setModifiedDate(LocalDateTime.now());
+//		board2.setWriter(member.getUsername());
+//		board2.setMember(member);
+//		boardRepo.save(board2);
+//		
+//	}
+	
 	@Test
-	public void memberBoardInsert() {
-		Member member = new Member();
-		member.setUsername("abcd123");
-		member.setPassword("pass123");
-		member.setCreatedDate(LocalDateTime.now());
-		member.setModifiedDate(LocalDateTime.now());
-		memberRepo.save(member);
+	public void existMemberCheck() {
+		Optional<Member> memberOpt = memberRepo.findByUsername("12345");
 		
-		Board board1 = new Board();
-		board1.setTitle("제목1");
-		board1.setContent("내용1");
-		board1.setCreatedDate(LocalDateTime.now());
-		board1.setModifiedDate(LocalDateTime.now());
-		board1.setWriter(member.getUsername());
-		board1.setMember(member);
-		boardRepo.save(board1);
-		
-		Board board2 = new Board();
-		board2.setTitle("제목2");
-		board2.setContent("내용2");
-		board2.setCreatedDate(LocalDateTime.now());
-		board2.setModifiedDate(LocalDateTime.now());
-		board2.setWriter(member.getUsername());
-		board2.setMember(member);
-		boardRepo.save(board2);
-		
+		System.out.println("== Exist Member Check ==");
+		System.out.println(memberOpt.isPresent());
 	}
 }
