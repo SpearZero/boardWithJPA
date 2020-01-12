@@ -7,9 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import jpa.board.dto.Member;
 import jpa.board.service.MemberService;
 
 @Controller
@@ -20,8 +22,14 @@ public class MemberController {
 	private MemberService memberService;
 	
     @GetMapping("/signUp")
-    public String signUp() {
+    public String getSignUp() {
     	return "/member/signUp";
+    }
+    
+    @PostMapping("/signUp")
+    public String postSignUp(@ModelAttribute Member member) {
+    	System.out.println(member);
+    	return "/";
     }
     
     @GetMapping("/dupCheckResult")
