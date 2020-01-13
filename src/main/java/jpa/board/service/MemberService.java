@@ -11,4 +11,6 @@ public interface MemberService {
 	boolean checkExistMember(String username);
 	
 	ResponseEntity<String> dupIdCheck(HttpServletRequest request);
+	
+	ResponseEntity<String> singUp(Member member);
 }
