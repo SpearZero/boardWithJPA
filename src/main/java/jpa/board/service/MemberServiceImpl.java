@@ -1,5 +1,6 @@
 package jpa.board.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,8 +35,29 @@ public class MemberServiceImpl implements MemberService{
 			String checkResult = String.valueOf(checkExistMember(username));
 			entity = new ResponseEntity<>(checkResult, HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			entity = new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
+			e.printStackTrace();
+		}
+		
+		return entity;
+	}
+
+	@Override
+	public ResponseEntity<String> singUp(Member member) {
+		ResponseEntity<String> entity = null;
+		
+		try {
+			LocalDateTime date = LocalDateTime.now();
+			member.setCreatedDate(date);
+			member.setModifiedDate(date);
+			
+			Member savedMember = memberRepository.save(member);
+			
+			String result = savedMember != null ? "true" : "false";
+			entity = new ResponseEntity<String>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>("error", HttpStatus.INTERNAL_SERVER_ERROR);
+			e.printStackTrace();
 		}
 		
 		return entity;
