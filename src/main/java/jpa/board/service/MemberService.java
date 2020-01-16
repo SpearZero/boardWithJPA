@@ -8,9 +8,13 @@ import org.springframework.stereotype.Service;
 import jpa.board.dto.Member;
 
 public interface MemberService {
-	boolean checkExistMember(String username);
+	public boolean checkExistMember(String username);
 	
-	ResponseEntity<String> dupIdCheck(HttpServletRequest request);
+	public ResponseEntity<String> dupIdCheck();
 	
-	ResponseEntity<String> singUp(Member member);
+	public ResponseEntity<String> singUp(Member member);
+	
+	public ResponseEntity<String> doLogin(Member member);
+	
+	public void doLogout();
 }

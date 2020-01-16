@@ -33,7 +33,25 @@ public class MemberController {
     }
     
     @GetMapping("/dupCheckResult")
-    public ResponseEntity<String> dupIdCheck(HttpServletRequest request) {
-    	return memberService.dupIdCheck(request);
+    public ResponseEntity<String> dupIdCheck() {
+    	return memberService.dupIdCheck();
+    }
+    
+    @GetMapping("/login")
+    public String getLogin() {
+    	return "/member/login";
+    }
+    
+    @PostMapping("/login")
+    public ResponseEntity<String> postLogin(@RequestBody Member member) {
+    	
+    	return memberService.doLogin(member);
+	}
+    
+    @GetMapping("/logout")
+    public String logout() {
+    	memberService.doLogout();
+    	
+    	return "redirect:/";
     }
 }

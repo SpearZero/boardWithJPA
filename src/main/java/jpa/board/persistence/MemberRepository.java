@@ -9,4 +9,6 @@ import jpa.board.dto.Member;
 public interface MemberRepository extends CrudRepository<Member, Long>{
 	
 	Optional<Member> findByUsername(String username);
+	
+	Optional<Member> findByUsernameAndPassword(String username, String password);
 }

@@ -8,7 +8,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-  <a class="navbar-brand" href="#">Navbar</a>
+  <a class="navbar-brand" href="/">BoardWithJPA</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -22,12 +22,21 @@
       </li>
     </ul>
     <ul class="navbar-nav">
+      {{^isLogin}}
       <li class="nav-item">
-        <a class="nav-link" href="#">로그인</a>
+        <a class="nav-link" href="/member/login">로그인</a>
       </li>
+      {{/isLogin}}
+      {{#isLogin}}
+      <li class="nav-item">
+      	<a class="nav-link" href="/member/logout">로그아웃</a>
+      </li>
+      {{/isLogin}}
+      {{^isLogin}}
       <li class="nav-item">
         <a class="nav-link" href="/member/signUp">회원가입</a>
       </li>
+      {{/isLogin}}
     </ul>
   </div>
 </nav>

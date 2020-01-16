@@ -28,7 +28,7 @@ let doSignUp = async () => {
 			return false;
 		}
 		
-		const getResponse = await fetch('http://localhost:8080/member/dupCheckResult?username='+inputIdValue,{
+		const getResponse = await fetch('/member/dupCheckResult?username='+inputIdValue,{
 			method : "GET"
 		});
 		const get = await getResponse.json();
@@ -51,7 +51,7 @@ let doSignUp = async () => {
 					password : passwordValue
 			}
 			
-			const postResponse = await fetch('http://localhost:8080/member/signUp', {
+			const postResponse = await fetch('/member/signUp', {
 				method : 'POST',
 				headers : {
 					'Accept' : 'application/json',
