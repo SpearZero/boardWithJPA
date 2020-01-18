@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class MemberServiceImpl implements MemberService{
 	
 	@Autowired
 	private HttpServletRequest request;
+	
+	@Autowired
+	private HttpServletResponse response;
 
 	@Override
 	public boolean checkExistMember(String username) {
@@ -77,7 +81,9 @@ public class MemberServiceImpl implements MemberService{
 			boolean isLoginResult = memberOpt.isPresent();
 			
 			if(isLoginResult) {
-				session.setAttribute("member", memberOpt.get());
+				Member sessionMember = memberOpt.get();
+				sessionMember.setPassword("");
+				session.setAttribute("member", sessionMember);
 			}
 			
 			session.setAttribute("isLogin", isLoginResult);
@@ -101,5 +107,30 @@ public class MemberServiceImpl implements MemberService{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public String checkMyInfo(String password) {
+		String goPage = "/";
+		
+		try {
+			HttpSession session = request.getSession(false);
+			
+			// 세션이 없는 경우에 대한 코드 추가(나중에는 공통적으로 관리)
+			if(session != null) {
+				// 세션에 "member"가 없는 상황도 고려해야 함
+				Member sessionMember = (Member)session.getAttribute("member");
+				
+				Optional<Member> optMember = memberRepository.findById(sessionMember.getId());
+				
+				Boolean checkResult = password.equals(optMember.get().getPassword());
+				
+				goPage = checkResult ? "redirect:/member/myInfo" : "/member/beforeMyInfo";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return goPage;
 	}
 }

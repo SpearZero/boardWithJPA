@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
-<link rel="stylesheet" href="/css/common.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>BoardWithJPA</title>
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" href="/css/common.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -22,17 +24,18 @@
       </li>
     </ul>
     <ul class="navbar-nav">
-      {{^isLogin}}
-      <li class="nav-item">
-        <a class="nav-link" href="/member/login">로그인</a>
-      </li>
-      {{/isLogin}}
       {{#isLogin}}
       <li class="nav-item">
       	<a class="nav-link" href="/member/logout">로그아웃</a>
       </li>
+      <li class="nav-item">
+      	<a class="nav-link" href="/member/beforeMyInfo">내정보</a>
+      </li>
       {{/isLogin}}
       {{^isLogin}}
+      <li class="nav-item">
+        <a class="nav-link" href="/member/login">로그인</a>
+      </li>
       <li class="nav-item">
         <a class="nav-link" href="/member/signUp">회원가입</a>
       </li>

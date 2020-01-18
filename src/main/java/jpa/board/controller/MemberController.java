@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jpa.board.dto.Member;
 import jpa.board.service.MemberService;
@@ -38,12 +39,12 @@ public class MemberController {
     }
     
     @GetMapping("/login")
-    public String getLogin() {
+    public String goLoginPage() {
     	return "/member/login";
     }
     
     @PostMapping("/login")
-    public ResponseEntity<String> postLogin(@RequestBody Member member) {
+    public ResponseEntity<String> doLogin(@RequestBody Member member) {
     	
     	return memberService.doLogin(member);
 	}
@@ -53,5 +54,22 @@ public class MemberController {
     	memberService.doLogout();
     	
     	return "redirect:/";
+    }
+    
+    @GetMapping("/beforeMyInfo")
+    public String goMyInfo() {
+    	
+    	return "/member/beforeMyInfo";
+    }
+    
+    @PostMapping("/beforeMyInfo")
+    public String checkMyInfo(@RequestParam String password) {
+    	return memberService.checkMyInfo(password);
+    }
+    
+    @GetMapping("/myInfo")
+    public String myInfo() {
+    	
+    	return "/member/myInfo";
     }
 }
