@@ -17,4 +17,6 @@ public interface MemberService {
 	public ResponseEntity<String> doLogin(Member member);
 	
 	public void doLogout();
+	
+	public String checkMyInfo(String password);
 }
