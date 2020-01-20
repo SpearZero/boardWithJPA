@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.service.spi.OptionallyManageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -132,5 +133,41 @@ public class MemberServiceImpl implements MemberService{
 		}
 		
 		return goPage;
+	}
+
+	@Override
+	public ResponseEntity<String> changeMyInfo(Member member) {
+		ResponseEntity<String> entity = null;
+		String result = "fail";
+		
+		try {
+			HttpSession session = request.getSession(false);
+			
+			if(session != null) {
+				Member sessionMember = (Member)session.getAttribute("member");
+				String userName = member.getUsername();
+				
+				Boolean checkResult = userName.equals(sessionMember.getUsername());
+				
+				if(checkResult) {
+					LocalDateTime now = LocalDateTime.now();
+					Member updateMember = memberRepository.findById(sessionMember.getId()).get();
+					updateMember.setModifiedDate(now);
+					System.out.println(now + " : " + member.getPassword());
+					updateMember.setPassword(member.getPassword());
+					memberRepository.save(updateMember);
+					
+					result = "success";
+				}
+				
+			}
+			
+			entity = new ResponseEntity<String>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<String>("error", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		return entity;
 	}
 }
