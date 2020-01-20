@@ -22,6 +22,11 @@ let doSignUp = async () => {
 			return false;
 		}
 		
+		if(passwordValue.trim() === "") {
+			alert("빈 패스워드 입력 불가");
+			return false;
+		}
+		
 		let eqPasswordValue = document.getElementById("passwordCheck").value;
 		if(!(passwordValue === eqPasswordValue)) {
 			alert("비밀번호와 비밀번호 확인의 값이 일치해야 합니다");

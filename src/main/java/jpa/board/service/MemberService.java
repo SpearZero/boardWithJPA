@@ -19,4 +19,6 @@ public interface MemberService {
 	public void doLogout();
 	
 	public String checkMyInfo(String password);
+	
+	public ResponseEntity<String> changeMyInfo(Member member);
 }

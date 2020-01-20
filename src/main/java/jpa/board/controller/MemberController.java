@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jpa.board.dto.Member;
 import jpa.board.service.MemberService;
@@ -71,5 +72,10 @@ public class MemberController {
     public String myInfo() {
     	
     	return "/member/myInfo";
+    }
+    
+    @PostMapping("/myInfo")
+    public ResponseEntity<String> postMyInfo(@RequestBody Member member) {
+    	return memberService.changeMyInfo(member);
     }
 }

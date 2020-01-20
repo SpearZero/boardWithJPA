@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-#index-content {
+.board-content-center {
 	padding-top : 56px;
 	height : 100vh;
 }
@@ -9,12 +9,3 @@
 	padding-top : 56px;
 }
 
-#signup-content {
-	padding-top : 56px;
-	height : 100vh;
-}
-
-#myInfo-content {
-	padding-top : 56px;
-	height : 100vh;
-}
