@@ -1,6 +1,8 @@
 package jpa.board.service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,7 +58,7 @@ public class MemberServiceImpl implements MemberService{
 		ResponseEntity<String> entity = null;
 		
 		try {
-			LocalDateTime date = LocalDateTime.now();
+			String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 			member.setCreatedDate(date);
 			member.setModifiedDate(date);
 			
@@ -150,10 +152,9 @@ public class MemberServiceImpl implements MemberService{
 				Boolean checkResult = userName.equals(sessionMember.getUsername());
 				
 				if(checkResult) {
-					LocalDateTime now = LocalDateTime.now();
+					String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 					Member updateMember = memberRepository.findById(sessionMember.getId()).get();
-					updateMember.setModifiedDate(now);
-					System.out.println(now + " : " + member.getPassword());
+					updateMember.setModifiedDate(date);
 					updateMember.setPassword(member.getPassword());
 					memberRepository.save(updateMember);
 					

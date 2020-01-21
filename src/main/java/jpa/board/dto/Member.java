@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Max;
 
 @Entity
@@ -18,9 +20,13 @@ public class Member {
 	
 	@Column(unique = true, length = 15)
 	private String username;
+	@Column
 	private String password;
-	private LocalDateTime createdDate;
-	private LocalDateTime modifiedDate;
+	
+	@Column
+	private String createdDate;
+	@Column
+	private String modifiedDate;
 	
 	public Long getId() {
 		return id;
@@ -45,20 +51,20 @@ public class Member {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	public LocalDateTime getCreatedDate() {
+
+	public String getCreatedDate() {
 		return createdDate;
 	}
-	
-	public void setCreatedDate(LocalDateTime createdDate) {
+
+	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
 	}
-	
-	public LocalDateTime getModifiedDate() {
+
+	public String getModifiedDate() {
 		return modifiedDate;
 	}
-	
-	public void setModifiedDate(LocalDateTime modifiedDate) {
+
+	public void setModifiedDate(String modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
 
