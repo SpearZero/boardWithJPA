@@ -1,7 +1,30 @@
 {{>./common/header}}
-<div class="container-fluid mt-5" id="board-content">
-    <div class="row justify-content-center">
-    	이곳에 테이블을 만들면 되겠습니다.
+<div class="container-fluid board-content-center" id="board-content">
+    <div class="row justify-content-center align-items-center h-100">
+    	<div class="col-lg-9 text-center">
+			<table class="table">
+			  <thead class="thead-dark">
+			    <tr>
+			      <th scope="col">번호</th>
+			      <th scope="col">제목</th>
+			      <th scope="col">글쓴이</th>
+			      <th scope="col">작성날짜</th>
+			      <th scope="col">수정날짜</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			  	{{#boardList}}
+			    <tr>
+			      <th scope="row">{{seq}}</th>
+			      <td>{{title}}</td>
+			      <td>{{writer}}</td>
+			      <td>{{createdDate}}</td>
+			      <td>{{modifiedDate}}</td>
+			    </tr>
+			  	{{/boardList}}
+			  </tbody>
+			</table>
+    	</div>
     </div>
 </div>
 {{>./common/footer}}
