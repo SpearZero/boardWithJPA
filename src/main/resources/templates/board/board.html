@@ -13,6 +13,11 @@
 			    </tr>
 			  </thead>
 			  <tbody>
+		        {{^boardList}}
+			    <tr>
+			      <th colspan="5">작성된 글이 없습니다</th>
+			    </tr>
+		      	{{/boardList}}
 			  	{{#boardList}}
 			    <tr>
 			      <th scope="row">{{seq}}</th>
@@ -24,6 +29,11 @@
 			  	{{/boardList}}
 			  </tbody>
 			</table>
+			<ul class="pagination justify-content-center">
+				{{#pageList}}
+					{{{.}}}
+				{{/pageList}}
+			</ul>
     	</div>
     </div>
 </div>

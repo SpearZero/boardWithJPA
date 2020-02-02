@@ -8,6 +8,7 @@ import javax.persistence.EntityTransaction;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import jpa.board.dto.Board;
@@ -25,6 +26,8 @@ class BoardWithJpaApplicationTests {
 	@Autowired
 	private MemberRepository memberRepo;
 	
+	@Value("${abcdefg}")
+	private String name;
 //	@Test
 //	public void boardInsertTest() {
 //		for(int i = 0; i < 100; i++) {
@@ -68,11 +71,35 @@ class BoardWithJpaApplicationTests {
 //		
 //	}
 	
+//	@Test
+//	public void memberBoardInsert() {
+//		Optional<Member> optMem = memberRepo.findById(1L);
+//		Member member = optMem.get();
+//		
+//		for(int i = 3; i < 23; i++) {
+//			Board board = new Board();
+//			board.setTitle("제목"+i);
+//			board.setContent("내용"+i);
+//			board.setCreatedDate(LocalDateTime.now());
+//			board.setModifiedDate(LocalDateTime.now());
+//			board.setWriter(member.getUsername());
+//			board.setMember(member);
+//			boardRepo.save(board);
+//		}
+//	}
+	
+	/*
+	 * @Test public void existMemberCheck() { Optional<Member> memberOpt =
+	 * memberRepo.findByUsername("12345");
+	 * 
+	 * System.out.println("== Exist Member Check ==");
+	 * System.out.println(memberOpt.isPresent()); }
+	 */
+	
 	@Test
-	public void existMemberCheck() {
-		Optional<Member> memberOpt = memberRepo.findByUsername("12345");
-		
-		System.out.println("== Exist Member Check ==");
-		System.out.println(memberOpt.isPresent());
+	public void test() {
+		System.out.println(name);
 	}
+	
+	
 }

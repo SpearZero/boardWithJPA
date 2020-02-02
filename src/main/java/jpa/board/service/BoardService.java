@@ -7,5 +7,8 @@ import org.springframework.data.domain.Pageable;
 import jpa.board.dto.Board;
 
 public interface BoardService {
-	List<Board> getBoardList(Pageable pageable);
+	
+	List<Board> getBoardList(int page);
+	
+	List<String> getPagination(int page);
 }
