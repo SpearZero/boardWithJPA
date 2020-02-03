@@ -17,7 +17,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import jpa.board.dto.Board;
+import jpa.board.dto.BoardList;
+import jpa.board.entity.Board;
 import jpa.board.persistence.BoardRepository;
 import jpa.board.service.BoardService;
 
@@ -42,16 +43,23 @@ public class BoardController {
     			page = Integer.parseInt(requestPage);
     		}
     		
-    		List<Board> boardList = boardService.getBoardList(page);
+    		List<BoardList> boardList = boardService.getBoardList(page);
     		List<String> pageList = boardService.getPagination(page);
     		
     		model.addAttribute("boardList", boardList);
     		model.addAttribute("pageList", pageList);
-    		
     	} catch (Exception e) {
     		e.printStackTrace();
 		}
     	
     	return "/board/board";
+    }
+    
+    @GetMapping("/boardContent")
+    public String goBoardContent(HttpServletRequest request) {
+    	String seq = request.getParameter("seq");
+    	System.out.println(seq);
+    	
+    	return "board/boardContent";
     }
 }

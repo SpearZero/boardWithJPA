@@ -1,4 +1,4 @@
-package jpa.board.dto;
+package jpa.board.entity;
 
 import java.time.LocalDateTime;
 

@@ -10,7 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import jpa.board.dto.Board;
+import jpa.board.dto.BoardList;
+import jpa.board.entity.Board;
 import jpa.board.persistence.BoardRepository;
 
 @Service
@@ -26,9 +27,9 @@ public class BoardServiceImpl implements BoardService {
 	private int countPage;
 
 	@Override
-	public List<Board> getBoardList(int page) {
+	public List<BoardList> getBoardList(int page) {
 		Pageable pageable = PageRequest.of((page-1), countList, Sort.Direction.DESC, "seq");
-		List<Board> boardList = boardRepo.findAll(pageable);
+		List<BoardList> boardList = boardRepo.findBoardList(pageable);
 		return boardList;
 	}
 

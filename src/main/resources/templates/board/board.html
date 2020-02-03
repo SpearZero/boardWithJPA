@@ -1,5 +1,5 @@
 {{>./common/header}}
-<div class="container-fluid board-content-center" id="board-content">
+<div class="container-fluid board-content-center" id="board-list">
     <div class="row justify-content-center align-items-center h-100">
     	<div class="col-lg-9 text-center">
 			<table class="table">
@@ -21,8 +21,8 @@
 			  	{{#boardList}}
 			    <tr>
 			      <th scope="row">{{seq}}</th>
-			      <td>{{title}}</td>
-			      <td>{{writer}}</td>
+			      <td><a href="/board/boardContent?seq={{seq}}">{{title}}</a></td>
+			      <td>{{username}}</td>
 			      <td>{{createdDate}}</td>
 			      <td>{{modifiedDate}}</td>
 			    </tr>
