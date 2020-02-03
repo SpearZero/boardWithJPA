@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import jpa.board.dto.Board;
-import jpa.board.dto.Member;
+import jpa.board.entity.Board;
+import jpa.board.entity.Member;
 import jpa.board.persistence.BoardRepository;
 import jpa.board.persistence.MemberRepository;
 

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import jpa.board.dto.Member;
+import jpa.board.entity.Member;
 import jpa.board.service.MemberService;
 
 @Controller

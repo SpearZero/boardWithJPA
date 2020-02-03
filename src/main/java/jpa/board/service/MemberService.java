@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import jpa.board.dto.Member;
+import jpa.board.entity.Member;
 
 public interface MemberService {
 	public boolean checkExistMember(String username);

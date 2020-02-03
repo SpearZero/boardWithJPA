@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import jpa.board.dto.Member;
+import jpa.board.entity.Member;
 import jpa.board.persistence.MemberRepository;
 
 @Service

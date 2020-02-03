@@ -1,4 +1,4 @@
-package jpa.board.dto;
+package jpa.board.entity;
 
 import java.time.LocalDateTime;
 
@@ -19,7 +19,6 @@ public class Board {
 	
 	private String title;
 	private String content;
-	private String writer;
 	
 	private LocalDateTime createdDate;
 	private LocalDateTime modifiedDate;
@@ -52,14 +51,6 @@ public class Board {
 		this.content = content;
 	}
 	
-	public String getWriter() {
-		return writer;
-	}
-	
-	public void setWriter(String writer) {
-		this.writer = writer;
-	}
-	
 	public LocalDateTime getCreatedDate() {
 		return createdDate;
 	}
@@ -83,11 +74,11 @@ public class Board {
 	public void setMember(Member member) {
 		this.member = member;
 	}
-	
+
 	// 순환참조로 인한 Member 제거
 	@Override
 	public String toString() {
-		return "Board [seq=" + seq + ", title=" + title + ", content=" + content + ", writer=" + writer
-				+ ", createdDate=" + createdDate + ", modifiedDate=" + modifiedDate + "]";
+		return "Board [seq=" + seq + ", title=" + title + ", content=" + content + ", createdDate=" + createdDate
+				+ ", modifiedDate=" + modifiedDate + "]";
 	}
 }
