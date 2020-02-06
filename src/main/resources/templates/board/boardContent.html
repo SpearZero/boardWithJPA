@@ -16,9 +16,9 @@
 					<textarea class="form-control" rows="10" readonly>내용</textarea>
 				</div>
 			</div>
-			<button class="btn btn-outline-secondary float-right ml-2">목록</button>
+			<button class="btn btn-outline-secondary float-right ml-2" id="listBtn" value={{page}}>목록</button>
 			{{#writer}}
-			<button class="btn btn-outline-secondary float-right">삭제</button>
+			<button class="btn btn-outline-secondary float-right" id="deleteBtn">삭제</button>
 			{{/writer}}
 			{{/board}}
 			{{^board}}
@@ -27,4 +27,5 @@
     	</div>
     </div>
 </div>
+<script src="/js/boardContent.js"></script>
 {{>./common/footer}}
