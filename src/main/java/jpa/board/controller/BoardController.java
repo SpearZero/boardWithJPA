@@ -2,6 +2,7 @@ package jpa.board.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jpa.board.dto.BoardList;
 import jpa.board.entity.Board;
+import jpa.board.entity.Member;
 import jpa.board.persistence.BoardRepository;
 import jpa.board.service.BoardService;
 
@@ -56,10 +58,27 @@ public class BoardController {
     }
     
     @GetMapping("/boardContent")
-    public String goBoardContent(HttpServletRequest request) {
-    	String seq = request.getParameter("seq");
-    	System.out.println(seq);
+    public String goBoardContent(HttpServletRequest request, Model model) {
+    	String getSeq = request.getParameter("seq");
+    	Long seq = 0L;
     	
+		if(!(getSeq == null || StringUtils.isEmpty(getSeq.trim()))) {
+			seq = Long.parseLong(getSeq);
+		}
+		
+		Optional<Board> boardOpt = boardRepo.findById(seq);
+		
+		if(boardOpt.isPresent()) {
+			Board board = boardOpt.get();
+			model.addAttribute("board", board);
+			
+			Member member = (Member)request.getSession().getAttribute("member");
+			if(member != null) {
+				boolean writer = member.getId() == board.getMember().getId() ? true : false;
+				model.addAttribute("writer", writer);
+			}
+		}
+		
     	return "board/boardContent";
     }
 }
