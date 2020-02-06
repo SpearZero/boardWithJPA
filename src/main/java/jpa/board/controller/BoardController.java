@@ -41,7 +41,7 @@ public class BoardController {
     		int page = 1;
     		String requestPage = request.getParameter("page");
     		
-    		if(!(requestPage == null || StringUtils.isEmpty(requestPage.trim()))) {
+    		if(checkReqNotNull(requestPage)) {
     			page = Integer.parseInt(requestPage);
     		}
     		
@@ -50,6 +50,7 @@ public class BoardController {
     		
     		model.addAttribute("boardList", boardList);
     		model.addAttribute("pageList", pageList);
+    		model.addAttribute("page", page);
     	} catch (Exception e) {
     		e.printStackTrace();
 		}
@@ -60,9 +61,11 @@ public class BoardController {
     @GetMapping("/boardContent")
     public String goBoardContent(HttpServletRequest request, Model model) {
     	String getSeq = request.getParameter("seq");
+    	String page = request.getParameter("page");
+    	
     	Long seq = 0L;
     	
-		if(!(getSeq == null || StringUtils.isEmpty(getSeq.trim()))) {
+		if(checkReqNotNull(getSeq)) {
 			seq = Long.parseLong(getSeq);
 		}
 		
@@ -79,6 +82,18 @@ public class BoardController {
 			}
 		}
 		
+		model.addAttribute("page", page);
+		
     	return "board/boardContent";
+    }
+    
+    private boolean checkReqNotNull(String param) {
+    	boolean checkResult = false;
+    	
+    	if(!(param == null) || StringUtils.isEmpty(param.trim())) {
+    		checkResult = true;
+    	}
+    	
+    	return checkResult;
     }
 }
