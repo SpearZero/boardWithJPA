@@ -4,16 +4,19 @@
     	<div class="col-lg-9 text-center">
 			{{#board}}
 			<div class="form-row">
-				<div class="form-group col-lg-2">
-					<input type="text" class="form-control" readonly value="1"/>
+				<div class="form-group col-lg-1">
+					<input type="text" class="form-control" readonly value="{{seq}}"/>
 				</div>
-				<div class="form-group col-lg-10">
-					<input type="text" class="form-control" readonly value="제목"/>
+				<div class="form-group col-lg-9">
+					<input type="text" class="form-control" readonly value="{{title}}"/>
+				</div>
+				<div class="form-group col-lg-2">
+					<input type="text" class="form-control" readonly value="{{createdDate}}"/>
 				</div>
 			</div>
 			<div class="form-row">
 				<div class="form-group col-lg-12">
-					<textarea class="form-control" rows="10" readonly>내용</textarea>
+					<textarea class="form-control" rows="10" readonly>{{content}}</textarea>
 				</div>
 			</div>
 			<button class="btn btn-outline-secondary float-right ml-2" id="listBtn" value={{page}}>목록</button>
@@ -27,5 +30,18 @@
     	</div>
     </div>
 </div>
+{{#writer}}
+<script>
+	// 글 작성자에게만 보이도록 스크립트 작성
+	let deleteBtn = document.getElementById("deleteBtn");
+	deleteBtn.addEventListener("click", function(){
+		let deleteCheck = confirm("게시글을 삭제하시겠습니까?");
+		
+		if(deleteCheck) {
+			location.href = "/board/delete/boardContent?seq={{board.seq}}&page={{page}}";
+		}
+	})
+</script>
+{{/writer}}
 <script src="/js/boardContent.js"></script>
 {{>./common/footer}}
