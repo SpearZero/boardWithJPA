@@ -15,7 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import jpa.board.entity.Board;
 import jpa.board.entity.Member;
+import jpa.board.persistence.BoardRepository;
 import jpa.board.persistence.MemberRepository;
 
 @Service
@@ -23,12 +25,6 @@ public class MemberServiceImpl implements MemberService{
 	
 	@Autowired
 	private MemberRepository memberRepository;
-	
-	@Autowired
-	private HttpServletRequest request;
-	
-	@Autowired
-	private HttpServletResponse response;
 
 	@Override
 	public boolean checkExistMember(String username) {
@@ -38,12 +34,10 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public ResponseEntity<String> dupIdCheck() {
-		String username = request.getParameter("username");
-		
+	public ResponseEntity<String> dupIdCheck(String userName) {
 		ResponseEntity<String> entity = null;
 		try {
-			String checkResult = String.valueOf(checkExistMember(username));
+			String checkResult = String.valueOf(checkExistMember(userName));
 			entity = new ResponseEntity<>(checkResult, HttpStatus.OK);
 		} catch (Exception e) {
 			entity = new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -75,12 +69,11 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public ResponseEntity<String> doLogin(Member member) {
+	public ResponseEntity<String> doLogin(HttpSession session, Member member) {
 		ResponseEntity<String> entity = null;
 		Optional<Member> memberOpt = memberRepository.findByUsernameAndPassword(member.getUsername(), member.getPassword());
 		
 		try {
-			HttpSession session = request.getSession();
 			boolean isLoginResult = memberOpt.isPresent();
 			
 			if(isLoginResult) {
@@ -100,7 +93,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void doLogout() {
+	public void doLogout(HttpServletRequest request) {
 		try {
 			HttpSession session = request.getSession(false);
 			
@@ -113,7 +106,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public String checkMyInfo(String password) {
+	public String checkMyInfo(HttpServletRequest request, String password) {
 		String goPage = "/";
 		
 		try {
@@ -138,7 +131,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public ResponseEntity<String> changeMyInfo(Member member) {
+	public ResponseEntity<String> changeMyInfo(HttpServletRequest request, Member member) {
 		ResponseEntity<String> entity = null;
 		String result = "fail";
 		

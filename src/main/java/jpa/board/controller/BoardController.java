@@ -72,19 +72,7 @@ public class BoardController {
 			seq = Long.parseLong(getSeq);
 		}
 		
-		Optional<Board> boardOpt = boardRepo.findById(seq);
-		
-		if(boardOpt.isPresent()) {
-			Board board = boardOpt.get();
-			model.addAttribute("board", board);
-			
-			Member member = (Member)request.getSession().getAttribute("member");
-			if(member != null) {
-				boolean writer = member.getId() == board.getMember().getId() ? true : false;
-				model.addAttribute("writer", writer);
-			}
-		}
-		
+		boardService.setBoardContent(request, model, seq);
 		model.addAttribute("page", page);
 		
     	return "board/boardContent";
@@ -96,21 +84,8 @@ public class BoardController {
     	String page = request.getParameter("page");
     	
     	Long seq = Long.parseLong(getSeq);
-		Optional<Board> boardOpt = boardRepo.findById(seq);
-		
-		if(boardOpt.isPresent()) {
-			Board board = boardOpt.get();
-			model.addAttribute("board", board);
-			
-			Member member = (Member)request.getSession().getAttribute("member");
-			if(member != null) {
-				boolean writer = member.getId() == board.getMember().getId() ? true : false;
-				
-				if(writer) {
-					boardRepo.deleteById(seq);
-				}
-			}
-		}
+    	
+    	boardService.deleteBoardContent(request, seq);
     	
     	return "redirect:/board?page="+page;
     }

@@ -2,6 +2,9 @@ package jpa.board.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,9 +12,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import jpa.board.dto.BoardList;
 import jpa.board.entity.Board;
+import jpa.board.entity.Member;
 import jpa.board.persistence.BoardRepository;
 
 @Service
@@ -84,5 +89,47 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 		return pageList;
+	}
+
+	@Override
+	public void setBoardContent(HttpServletRequest request, Model model, Long seq) {
+		try {
+			Optional<Board> boardOpt = boardRepo.findById(seq);
+			
+			if(boardOpt.isPresent()) {
+				Board board = boardOpt.get();
+				model.addAttribute("board", board);
+				
+				Member member = (Member)request.getSession().getAttribute("member");
+				if(member != null) {
+					boolean writer = member.getId() == board.getMember().getId() ? true : false;
+					model.addAttribute("writer", writer);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void deleteBoardContent(HttpServletRequest request, Long seq) {
+		try {
+			Optional<Board> boardOpt = boardRepo.findById(seq);
+			
+			if(boardOpt.isPresent()) {
+				Board board = boardOpt.get();
+				
+				Member member = (Member)request.getSession().getAttribute("member");
+				if(member != null) {
+					boolean writer = member.getId() == board.getMember().getId() ? true : false;
+					
+					if(writer) {
+						boardRepo.deleteById(seq);
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
