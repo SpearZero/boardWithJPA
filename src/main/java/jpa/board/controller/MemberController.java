@@ -1,6 +1,7 @@
 package jpa.board.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,8 +36,10 @@ public class MemberController {
     }
     
     @GetMapping("/dupCheckResult")
-    public ResponseEntity<String> dupIdCheck() {
-    	return memberService.dupIdCheck();
+    public ResponseEntity<String> dupIdCheck(HttpServletRequest request) {
+    	String userName = request.getParameter("username");
+    	
+    	return memberService.dupIdCheck(userName);
     }
     
     @GetMapping("/login")
@@ -45,14 +48,16 @@ public class MemberController {
     }
     
     @PostMapping("/login")
-    public ResponseEntity<String> doLogin(@RequestBody Member member) {
+    public ResponseEntity<String> doLogin(HttpServletRequest request, @RequestBody Member member) {
+		HttpSession session = request.getSession();
     	
-    	return memberService.doLogin(member);
+    	return memberService.doLogin(session, member);
 	}
     
     @GetMapping("/logout")
-    public String logout() {
-    	memberService.doLogout();
+    public String logout(HttpServletRequest request) {
+    	
+    	memberService.doLogout(request);
     	
     	return "redirect:/";
     }
@@ -64,8 +69,8 @@ public class MemberController {
     }
     
     @PostMapping("/beforeMyInfo")
-    public String checkMyInfo(@RequestParam String password) {
-    	return memberService.checkMyInfo(password);
+    public String checkMyInfo(HttpServletRequest request, @RequestParam String password) {
+    	return memberService.checkMyInfo(request, password);
     }
     
     @GetMapping("/myInfo")
@@ -75,7 +80,7 @@ public class MemberController {
     }
     
     @PostMapping("/myInfo")
-    public ResponseEntity<String> postMyInfo(@RequestBody Member member) {
-    	return memberService.changeMyInfo(member);
+    public ResponseEntity<String> postMyInfo(HttpServletRequest request, @RequestBody Member member) {
+    	return memberService.changeMyInfo(request, member);
     }
 }

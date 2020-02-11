@@ -26,7 +26,6 @@ class BoardWithJpaApplicationTests {
 	@Autowired
 	private MemberRepository memberRepo;
 	
-	@Value("${abcdefg}")
 	private String name;
 //	@Test
 //	public void boardInsertTest() {
@@ -98,7 +97,8 @@ class BoardWithJpaApplicationTests {
 	
 	@Test
 	public void test() {
-		System.out.println(name);
+		Board board = new Board();
+		System.out.println(board.getSeq());
 	}
 	
 	
