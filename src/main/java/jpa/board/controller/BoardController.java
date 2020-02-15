@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import jpa.board.dto.BoardList;
 import jpa.board.entity.Board;
@@ -41,12 +42,8 @@ public class BoardController {
     public String goBoard(HttpServletRequest request, Model model) {
     	
     	try {
-    		int page = 1;
     		String requestPage = request.getParameter("page");
-    		
-    		if(checkReqNotNull(requestPage)) {
-    			page = Integer.parseInt(requestPage);
-    		}
+    		int page = StringUtils.isEmpty(requestPage) ? 1 : Integer.parseInt(requestPage);
     		
     		List<BoardList> boardList = boardService.getBoardList(page);
     		List<String> pageList = boardService.getPagination(page);
@@ -68,7 +65,7 @@ public class BoardController {
     	
     	Long seq = 0L;
     	
-		if(checkReqNotNull(getSeq)) {
+		if(!StringUtils.isEmpty(getSeq)) {
 			seq = Long.parseLong(getSeq);
 		}
 		
@@ -90,13 +87,13 @@ public class BoardController {
     	return "redirect:/board?page="+page;
     }
     
-    private boolean checkReqNotNull(String param) {
-    	boolean checkResult = false;
-    	
-    	if(!(param == null) || StringUtils.isEmpty(param.trim())) {
-    		checkResult = true;
-    	}
-    	
-    	return checkResult;
+    @GetMapping("/write")
+    public String getWriteBoard(HttpServletRequest request, Model model) {
+    	return boardService.getWriteBoard(request);
+    }
+    
+    @PostMapping("/write/boardContent")
+    public String postWriteBoard(HttpServletRequest request) {
+    	return boardService.postWriteBoard(request);
     }
 }

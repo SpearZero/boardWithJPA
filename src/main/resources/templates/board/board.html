@@ -2,6 +2,9 @@
 <div class="container-fluid board-content-center" id="board-list">
     <div class="row justify-content-center align-items-center h-100">
     	<div class="col-lg-9 text-center">
+    		{{#isLogin}}
+    		<button class="float-right mb-2 btn btn-primary" id="writeBtn">글쓰기</button>
+    		{{/isLogin}}
 			<table class="table">
 			  <thead class="thead-dark">
 			    <tr>
@@ -37,4 +40,12 @@
     	</div>
     </div>
 </div>
+{{#isLogin}}
+<script>
+	let writeBtn = document.getElementById("writeBtn");
+	writeBtn.addEventListener("click", function(){
+		location.href = "/board/write?page={{page}}";
+	})
+</script>
+{{/isLogin}}
 {{>./common/footer}}

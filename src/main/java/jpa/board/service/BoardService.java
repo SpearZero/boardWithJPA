@@ -19,4 +19,8 @@ public interface BoardService {
 	public void setBoardContent(HttpServletRequest request, Model model, Long seq);
 	
 	public void deleteBoardContent(HttpServletRequest request, Long seq);
+	
+	public String getWriteBoard(HttpServletRequest request);
+	
+	public String postWriteBoard(HttpServletRequest request);
 }

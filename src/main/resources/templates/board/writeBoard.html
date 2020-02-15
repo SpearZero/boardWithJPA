@@ -1,0 +1,23 @@
+{{>./common/header}}
+<div class="container-fluid board-content-center" id="write-board">
+    <div class="row justify-content-center align-items-center h-100">
+    	<div class="col-lg-9 text-center">
+    		<form method="post" action="/board/write/boardContent" id="writeBoardForm">
+	    		<div class="form-group">
+				<div class="form-row">
+					<div class="form-group col-lg-12">
+						<input type="text" class="form-control" value="" placeholder="제목을입력하세요" maxlength="85" name="title" id="title"/>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-lg-12">
+						<textarea class="form-control" rows="10" placeholder="내용을입력하세요" maxlength="85" name="content" id="content"></textarea>
+					</div>
+				</div>
+				<input class="btn btn-primary" type="submit" value="글쓰기">
+    		</div>
+    		</form>
+    	</div>
+    </div>
+</div>
+{{>./common/footer}}
