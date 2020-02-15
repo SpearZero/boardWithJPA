@@ -1,10 +1,13 @@
 package jpa.board.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,12 +21,16 @@ import jpa.board.dto.BoardList;
 import jpa.board.entity.Board;
 import jpa.board.entity.Member;
 import jpa.board.persistence.BoardRepository;
+import jpa.board.persistence.MemberRepository;
 
 @Service
 public class BoardServiceImpl implements BoardService {
 	
 	@Autowired
 	BoardRepository boardRepo;
+	
+	@Autowired
+	MemberRepository memberRepo;
 	
 	@Value("${board.countList}")
 	private int countList;
@@ -131,5 +138,60 @@ public class BoardServiceImpl implements BoardService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public String getWriteBoard(HttpServletRequest request) {
+		String goPage = "/board?page=1";
+		try {
+			HttpSession session = request.getSession(false);
+			
+			if(session != null) {
+				Member sessionMember = (Member)request.getSession().getAttribute("member");
+				goPage = sessionMember != null ? "board/writeBoard" : goPage;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return goPage;
+	}
+
+	@Override
+	public String postWriteBoard(HttpServletRequest request) {
+		String goPage = "redirect:/board";
+		String title = request.getParameter("title");
+		String content = request.getParameter("content");
+		
+		try {
+			HttpSession session = request.getSession(false);
+			
+			if(session != null) {
+				Member sessionMember = (Member)request.getSession().getAttribute("member");
+				
+				if(sessionMember != null) {
+					Optional<Member> optMember = memberRepo.findById(sessionMember.getId());
+					
+					if(optMember.isPresent()) {
+						Member member = optMember.get();
+						
+						Board board = new Board();
+						board.setTitle(title);
+						board.setContent(content);
+						
+						String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+						board.setCreatedDate(date);
+						board.setModifiedDate(date);
+						board.setMember(member);
+						
+						boardRepo.save(board);
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return goPage;
 	}
 }

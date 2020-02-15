@@ -10,5 +10,4 @@ public class BoardWithJpaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BoardWithJpaApplication.class, args);
 	}
-	
 }

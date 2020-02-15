@@ -7,12 +7,12 @@ public class BoardList {
 	private Long seq;
 	private String username;
 	private String title;
-	private LocalDateTime createdDate;
-	private LocalDateTime modifiedDate;
+	private String createdDate;
+	private String modifiedDate;
 	
 	public BoardList() {}
 
-	public BoardList(Long seq, String username, String title, LocalDateTime createdDate, LocalDateTime modifiedDate) {
+	public BoardList(Long seq, String username, String title, String createdDate, String modifiedDate) {
 		this.seq = seq;
 		this.username = username;
 		this.title = title;
@@ -23,43 +23,43 @@ public class BoardList {
 	public Long getSeq() {
 		return seq;
 	}
-	
+
 	public void setSeq(Long seq) {
 		this.seq = seq;
 	}
-	
+
 	public String getUsername() {
 		return username;
 	}
-	
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
-	
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
-	public LocalDateTime getCreatedDate() {
+
+	public String getCreatedDate() {
 		return createdDate;
 	}
-	
-	public void setCreatedDate(LocalDateTime createdDate) {
+
+	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
 	}
-	
-	public LocalDateTime getModifiedDate() {
+
+	public String getModifiedDate() {
 		return modifiedDate;
 	}
-	
-	public void setModifiedDate(LocalDateTime modifiedDate) {
+
+	public void setModifiedDate(String modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "BoardList [seq=" + seq + ", username=" + username + ", title=" + title + ", createdDate=" + createdDate

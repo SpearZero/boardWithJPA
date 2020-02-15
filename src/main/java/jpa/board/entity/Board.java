@@ -20,8 +20,8 @@ public class Board {
 	private String title;
 	private String content;
 	
-	private LocalDateTime createdDate;
-	private LocalDateTime modifiedDate;
+	private String createdDate;
+	private String modifiedDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id")
@@ -50,20 +50,20 @@ public class Board {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	
-	public LocalDateTime getCreatedDate() {
+
+	public String getCreatedDate() {
 		return createdDate;
 	}
-	
-	public void setCreatedDate(LocalDateTime createdDate) {
+
+	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
 	}
-	
-	public LocalDateTime getModifiedDate() {
+
+	public String getModifiedDate() {
 		return modifiedDate;
 	}
-	
-	public void setModifiedDate(LocalDateTime modifiedDate) {
+
+	public void setModifiedDate(String modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
 
