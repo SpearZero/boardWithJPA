@@ -60,40 +60,38 @@ public class BoardController {
     
     @GetMapping("/boardContent")
     public String goBoardContent(HttpServletRequest request, Model model) {
-    	String getSeq = request.getParameter("seq");
-    	String page = request.getParameter("page");
-    	
-    	Long seq = 0L;
-    	
-		if(!StringUtils.isEmpty(getSeq)) {
-			seq = Long.parseLong(getSeq);
-		}
-		
-		boardService.setBoardContent(request, model, seq);
-		model.addAttribute("page", page);
-		
-    	return "board/boardContent";
+    	return boardService.setBoardContent(request, model);
     }
     
     @GetMapping("/delete/boardContent")
     public String deleteBoardContent(HttpServletRequest request, Model model) {
-    	String getSeq = request.getParameter("seq");
     	String page = request.getParameter("page");
     	
-    	Long seq = Long.parseLong(getSeq);
-    	
-    	boardService.deleteBoardContent(request, seq);
+    	boardService.deleteBoardContent(request);
     	
     	return "redirect:/board?page="+page;
     }
     
     @GetMapping("/write")
     public String getWriteBoard(HttpServletRequest request, Model model) {
+    	String page = StringUtils.isEmpty(request.getParameter("page")) ? "1" : request.getParameter("page");
+    	model.addAttribute("page", page);
+    	
     	return boardService.getWriteBoard(request);
     }
     
     @PostMapping("/write/boardContent")
     public String postWriteBoard(HttpServletRequest request) {
     	return boardService.postWriteBoard(request);
+    }
+    
+    @GetMapping("/update")
+    public String getUpdateBoard(HttpServletRequest request, Model model) {
+    	return boardService.setUpdateBoardContent(request, model);
+    }
+    
+    @PostMapping("/update/boardContent")
+    public String postUpdateBoard(HttpServletRequest request) {
+    	return boardService.updateBoardContent(request);
     }
 }

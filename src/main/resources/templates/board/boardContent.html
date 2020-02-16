@@ -21,7 +21,8 @@
 			</div>
 			<button class="btn btn-outline-secondary float-right ml-2" id="listBtn" value={{page}}>목록</button>
 			{{#writer}}
-			<button class="btn btn-outline-secondary float-right" id="deleteBtn">삭제</button>
+			<button class="btn btn-outline-secondary float-right ml-2" id="deleteBtn">삭제</button>
+			<button class="btn btn-outline-secondary float-right" id="goUpdate">수정</button>
 			{{/writer}}
 			{{/board}}
 			{{^board}}
@@ -33,6 +34,11 @@
 </div>
 {{#writer}}
 <script>
+	let goUpdate = document.getElementById("goUpdate");
+	goUpdate.addEventListener("click", function(){
+		location.href = "/board/update?seq={{board.seq}}&page={{page}}";
+	});
+
 	// 글 작성자에게만 보이도록 스크립트 작성
 	let deleteBtn = document.getElementById("deleteBtn");
 	deleteBtn.addEventListener("click", function(){
