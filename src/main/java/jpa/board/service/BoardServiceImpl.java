@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 
 import jpa.board.dto.BoardList;
 import jpa.board.entity.Board;
@@ -99,8 +100,18 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void setBoardContent(HttpServletRequest request, Model model, Long seq) {
+	public String setBoardContent(HttpServletRequest request, Model model) {
+		String page = StringUtils.isEmpty(request.getParameter("page")) ? "1" : request.getParameter("page");
+		String goPage = "redirect:/board?page="+page;
+		
 		try {
+	    	String getSeq = request.getParameter("seq");
+	    	Long seq = 0L;
+	    	
+			if(!StringUtils.isEmpty(getSeq)) {
+				seq = Long.parseLong(getSeq);
+			}
+			
 			Optional<Board> boardOpt = boardRepo.findById(seq);
 			
 			if(boardOpt.isPresent()) {
@@ -109,18 +120,26 @@ public class BoardServiceImpl implements BoardService {
 				
 				Member member = (Member)request.getSession().getAttribute("member");
 				if(member != null) {
-					boolean writer = member.getId() == board.getMember().getId() ? true : false;
+					boolean writer = member.getId() == board.getMember().getId();
 					model.addAttribute("writer", writer);
 				}
+				
+				model.addAttribute("page", page);
+				goPage = "/board/boardContent";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		return goPage;
 	}
 
 	@Override
-	public void deleteBoardContent(HttpServletRequest request, Long seq) {
+	public void deleteBoardContent(HttpServletRequest request) {
 		try {
+	    	String getSeq = request.getParameter("seq");
+	    	Long seq = Long.parseLong(getSeq);
+	    	
 			Optional<Board> boardOpt = boardRepo.findById(seq);
 			
 			if(boardOpt.isPresent()) {
@@ -128,7 +147,7 @@ public class BoardServiceImpl implements BoardService {
 				
 				Member member = (Member)request.getSession().getAttribute("member");
 				if(member != null) {
-					boolean writer = member.getId() == board.getMember().getId() ? true : false;
+					boolean writer = member.getId() == board.getMember().getId();
 					
 					if(writer) {
 						boardRepo.deleteById(seq);
@@ -189,6 +208,83 @@ public class BoardServiceImpl implements BoardService {
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return goPage;
+	}
+
+	@Override
+	public String setUpdateBoardContent(HttpServletRequest request, Model model) {
+		String page = StringUtils.isEmpty(request.getParameter("page")) ? "1" : request.getParameter("page");
+		String goPage = "redirect:/board?page="+page;
+		
+		try {
+			String getSeq = request.getParameter("seq");
+			Long seq = 0L;
+			
+			if(!StringUtils.isEmpty(getSeq)) {
+				seq = Long.parseLong(getSeq);
+			}
+			
+			Optional<Board> boardOpt = boardRepo.findById(seq);
+			
+			if(boardOpt.isPresent()) {
+				Board board = boardOpt.get();
+				model.addAttribute("board", board);
+				
+				Member member = (Member)request.getSession().getAttribute("member");
+				if(member != null) {
+					boolean writer = member.getId() == board.getMember().getId();
+					model.addAttribute("writer", writer);
+				}
+				
+				model.addAttribute("page", page);
+				goPage = "/board/updateBoard";
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return goPage;
+	}
+
+	@Override
+	public String updateBoardContent(HttpServletRequest request) {
+		String page = StringUtils.isEmpty(request.getParameter("page")) ? "1" : request.getParameter("page");
+		String goPage = "redirect:/board?page="+page;
+		
+		try {
+			String getSeq = request.getParameter("seq");
+			Long seq = 0L;
+			
+			if(!StringUtils.isEmpty(getSeq)) {
+				seq = Long.parseLong(getSeq);
+			}
+			
+			Optional<Board> boardOpt = boardRepo.findById(seq);
+			
+			if(boardOpt.isPresent()) {
+				Board board = boardOpt.get();
+				
+				Member member = (Member)request.getSession().getAttribute("member");
+				if(member != null) {
+					boolean writer = member.getId() == board.getMember().getId();
+					
+					if(writer) {
+						String title = request.getParameter("title");
+						String content = request.getParameter("content");
+						
+						board.setTitle(title);
+						board.setContent(content);
+						String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+						board.setModifiedDate(date);
+						
+						boardRepo.save(board);
+					}
+				}
+			}
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		

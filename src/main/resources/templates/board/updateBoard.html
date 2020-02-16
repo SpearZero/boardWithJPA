@@ -1,0 +1,65 @@
+{{>./common/header}}
+<div class="container-fluid board-content-center" id="update-board">
+    <div class="row justify-content-center align-items-center h-100">
+    	<div class="col-lg-9 text-center">
+    		{{#board}}
+    		<form method="post" action="/board/update/boardContent" id="updateForm">
+	    		<div class="form-group">
+				<div class="form-row">
+					<div class="form-group col-lg-12">
+						<input type="text" class="form-control" value="{{title}}" placeholder="제목을입력하세요" maxlength="85" name="title" id="title"/>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-lg-12">
+						<textarea class="form-control" rows="10" placeholder="내용을입력하세요" maxlength="85" name="content" id="content">{{content}}</textarea>
+					</div>
+				</div>
+				<input type="hidden" name="seq" id="seq" value="{{seq}}"/>
+				<input type="hidden" name="page" id="page" value="{{page}}"/>
+				<button type="button" class="btn btn btn-outline-secondary float-right ml-2" id="listBtn" value={{page}}>목록</button>
+				{{#writer}}
+				<input  type="button" class="btn btn btn-outline-secondary float-right ml-2" value="수정" id="update">
+				<button type="button" class="btn btn btn-outline-secondary float-right" id="deleteBtn">삭제</button>
+				{{/writer}}
+    		</div>
+    		</form>
+    		{{/board}}
+    	</div>
+    </div>
+</div>
+{{#writer}}
+<script>
+	let update = document.getElementById("update");
+	update.addEventListener("click", function(){
+		
+		if(confirm("글을 수정하시겠습니까?")) {
+			const title = document.getElementById("title").value;
+			const content = document.getElementById("content").value;
+			
+			if(title.trim() === '') {
+				alert("제목을 입력해주세요");
+				return false;
+			}
+			
+			if(content.trim() === '') {
+				alert("내용을 입력해주세요")
+				return false;
+			}
+			
+			document.getElementById("updateForm").submit();
+		}
+	})
+	
+	let deleteBtn = document.getElementById("deleteBtn");
+	deleteBtn.addEventListener("click", function(){
+		let deleteCheck = confirm("게시물을 삭제하시겠습니까?");
+		
+		if(deleteCheck) {
+			location.href = "/board/delete/boardContent?seq={{board.seq}}&page={{page}}"
+		}
+	})
+</script>
+{{/writer}}
+<script src="/js/boardContent.js"></script>
+{{>./common/footer}}

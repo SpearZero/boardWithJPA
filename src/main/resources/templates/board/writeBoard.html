@@ -14,10 +14,40 @@
 						<textarea class="form-control" rows="10" placeholder="내용을입력하세요" maxlength="85" name="content" id="content"></textarea>
 					</div>
 				</div>
-				<input class="btn btn-primary" type="submit" value="글쓰기">
+				<input type="button" class="btn btn-primary" id="write" value="글쓰기"/>
+				<button type="button" class="btn btn-primary" id="listBtn">목록</button>
     		</div>
     		</form>
     	</div>
     </div>
 </div>
+{{#isLogin}}
+<script>
+	let write = document.getElementById("write");
+	write.addEventListener("click", function(){
+		
+		if(confrim("글을 작성하시겠습니까?")) {
+			const title = document.getElementById("title").value;
+			const content = document.getElementById("content").value;
+			
+			if(title.trim() === '') {
+				alert("제목을 입력해주세요");
+				return false;
+			}
+			
+			if(content.trim() === '') {
+				alert("내용을 입력해주세요")
+				return false;
+			}
+			
+			document.getElementById("writeBoardForm").submit();
+		}
+	})
+
+	let listBtn = document.getElementById("listBtn");
+	listBtn.addEventListener("click", function(){
+		location.href = "/board?page="+{{page}}
+	})
+</script>
+{{/isLogin}}
 {{>./common/footer}}
