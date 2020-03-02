@@ -60,7 +60,29 @@ public class BoardController {
     
     @GetMapping("/boardContent")
     public String goBoardContent(HttpServletRequest request, Model model) {
-    	return boardService.setBoardContent(request, model);
+    	String seq = StringUtils.isEmpty(request.getParameter("seq")) ? "0" : request.getParameter("seq");
+    	String page = StringUtils.isEmpty(request.getParameter("page")) ? "1" : request.getParameter("page");
+    	String goPage = "redirect:/board?page="+page;
+    	
+    	try {
+    		Optional<Board> boardOpt = boardService.getBoard(seq);
+    		Board board = boardOpt.orElse(null);
+    		
+    		if(board == null) {
+    			return goPage;
+    		}
+    		
+    		Member member = Optional.ofNullable((Member)request.getSession().getAttribute("member")).orElse(new Member());
+    		model.addAttribute("writer", member.getId() == board.getMember().getId());
+    		model.addAttribute("board", board);
+    		model.addAttribute("page", page);
+    		
+    		goPage = "/board/boardContent";
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return goPage;
     }
     
     @GetMapping("/delete/boardContent")

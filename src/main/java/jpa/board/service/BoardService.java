@@ -1,6 +1,7 @@
 package jpa.board.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,7 +19,9 @@ public interface BoardService {
 	
 	public List<String> getPagination(int page);
 	
-	public String setBoardContent(HttpServletRequest request, Model model);
+	public Optional<Board> getBoard(String getSeq) throws Exception;
+	
+	// public String setBoardContent(HttpServletRequest request, Model model);
 	
 	public void deleteBoardContent(HttpServletRequest request);
 	
