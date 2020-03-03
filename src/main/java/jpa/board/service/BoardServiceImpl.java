@@ -108,63 +108,12 @@ public class BoardServiceImpl implements BoardService {
 		return board;
 	}
 
-//	@Override
-//	public String setBoardContent(HttpServletRequest request, Model model) {
-//		String page = StringUtils.isEmpty(request.getParameter("page")) ? "1" : request.getParameter("page");
-//		String goPage = "redirect:/board?page="+page;
-//		
-//		try {
-//	    	String getSeq = request.getParameter("seq");
-//	    	Long seq = 0L;
-//	    	
-//			if(!StringUtils.isEmpty(getSeq)) {
-//				seq = Long.parseLong(getSeq);
-//			}
-//			
-//			Optional<Board> boardOpt = boardRepo.findById(seq);
-//			
-//			if(boardOpt.isPresent()) {
-//				Board board = boardOpt.get();
-//				model.addAttribute("board", board);
-//				
-//				Member member = (Member)request.getSession().getAttribute("member");
-//				if(member != null) {
-//					boolean writer = member.getId() == board.getMember().getId();
-//					model.addAttribute("writer", writer);
-//				}
-//				
-//				model.addAttribute("page", page);
-//				goPage = "/board/boardContent";
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		
-//		return goPage;
-//	}
-
 	@Override
-	public void deleteBoardContent(HttpServletRequest request) {
-		try {
-	    	String getSeq = request.getParameter("seq");
-	    	Long seq = Long.parseLong(getSeq);
-	    	
-			Optional<Board> boardOpt = boardRepo.findById(seq);
-			
-			if(boardOpt.isPresent()) {
-				Board board = boardOpt.get();
-				
-				Member member = (Member)request.getSession().getAttribute("member");
-				if(member != null) {
-					boolean writer = member.getId() == board.getMember().getId();
-					
-					if(writer) {
-						boardRepo.deleteById(seq);
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+	public void deleteBoardContent(Board board, Member member) {
+		boolean writer = member.getId() == board.getMember().getId();
+		
+		if(writer) {
+			boardRepo.deleteById(board.getSeq());
 		}
 	}
 
