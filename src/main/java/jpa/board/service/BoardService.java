@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 import jpa.board.dto.BoardList;
 import jpa.board.entity.Board;
+import jpa.board.entity.Member;
 
 public interface BoardService {
 	
@@ -21,9 +22,7 @@ public interface BoardService {
 	
 	public Optional<Board> getBoard(String getSeq) throws Exception;
 	
-	// public String setBoardContent(HttpServletRequest request, Model model);
-	
-	public void deleteBoardContent(HttpServletRequest request);
+	public void deleteBoardContent(Board board, Member member);
 	
 	public String getWriteBoard(HttpServletRequest request);
 	
