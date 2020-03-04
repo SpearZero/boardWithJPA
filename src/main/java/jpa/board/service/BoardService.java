@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 import jpa.board.dto.BoardList;
+import jpa.board.dto.Content;
 import jpa.board.entity.Board;
 import jpa.board.entity.Member;
 
@@ -24,9 +25,7 @@ public interface BoardService {
 	
 	public void deleteBoardContent(Board board, Member member);
 	
-	public String getWriteBoard(HttpServletRequest request);
-	
-	public String postWriteBoard(HttpServletRequest request);
+	public void writeBoardContent(Member member, Content content);
 	
 	public String setUpdateBoardContent(HttpServletRequest request, Model model);
 	

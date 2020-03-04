@@ -164,4 +164,10 @@ public class MemberServiceImpl implements MemberService{
 		
 		return entity;
 	}
+
+	@Override
+	public Optional<Member> findMember(Long id) {
+		return memberRepository.findById(id);
+	}
+	
 }

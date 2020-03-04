@@ -1,5 +1,7 @@
 package jpa.board.service;
 
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -23,4 +25,6 @@ public interface MemberService {
 	public String checkMyInfo(HttpServletRequest request, String password);
 	
 	public ResponseEntity<String> changeMyInfo(HttpServletRequest request, Member member);
+	
+	public Optional<Member> findMember(Long id);
 }
