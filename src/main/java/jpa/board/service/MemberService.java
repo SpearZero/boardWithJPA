@@ -18,11 +18,7 @@ public interface MemberService {
 	
 	public ResponseEntity<String> singUp(Member member);
 	
-	public ResponseEntity<String> doLogin(HttpSession session, Member member);
-	
-	public void doLogout(HttpServletRequest request);
-	
-	public String checkMyInfo(HttpServletRequest request, String password);
+	public Optional<Member> findUserUsingNamePassword(String username, String password);
 	
 	public ResponseEntity<String> changeMyInfo(HttpServletRequest request, Member member);
 	

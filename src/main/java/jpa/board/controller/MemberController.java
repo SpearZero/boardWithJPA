@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jpa.board.entity.Member;
+import jpa.board.persistence.MemberRepository;
 import jpa.board.service.MemberService;
 
 @Controller
@@ -49,15 +50,40 @@ public class MemberController {
     
     @PostMapping("/login")
     public ResponseEntity<String> doLogin(HttpServletRequest request, @RequestBody Member member) {
-		HttpSession session = request.getSession();
+    	ResponseEntity<String> entity = null;
+    	HttpSession session = request.getSession();
     	
-    	return memberService.doLogin(session, member);
+    	try {
+    		Member findMember = memberService.findUserUsingNamePassword(member.getUsername(), member.getPassword()).orElse(null);
+    		
+    		boolean isLoginResult = findMember == null ? false : true;
+    		
+    		if(isLoginResult) {
+    			findMember.setPassword("");
+    			session.setAttribute("member", findMember);
+    		}
+    		
+    		session.setAttribute("isLogin", isLoginResult);
+    		entity = new ResponseEntity<String>(String.valueOf(isLoginResult), HttpStatus.OK);
+    	} catch (Exception e) {
+    		entity = new ResponseEntity<String>("error", HttpStatus.INTERNAL_SERVER_ERROR);
+    		e.printStackTrace();
+		}
+    	
+    	return entity;
 	}
     
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
-    	
-    	memberService.doLogout(request);
+    	try {
+    		HttpSession session = request.getSession(false);
+    		
+    		if(session != null) {
+    			session.invalidate();
+    		}
+    	} catch (Exception e) {
+    		e.printStackTrace();
+		}
     	
     	return "redirect:/";
     }
@@ -70,7 +96,26 @@ public class MemberController {
     
     @PostMapping("/beforeMyInfo")
     public String checkMyInfo(HttpServletRequest request, @RequestParam String password) {
-    	return memberService.checkMyInfo(request, password);
+    	String goPage = "redirect:/";
+    	
+    	try {
+    		HttpSession session = request.getSession(false);
+    		
+    		if(session == null) {
+    			return goPage;
+    		}
+    		
+    		Member sessionMember = (Member)session.getAttribute("member");
+    		Member member = memberService.findMember(sessionMember.getId()).orElse(new Member());
+    		
+    		Boolean checkResult = password.equals(member.getPassword());
+    		
+    		goPage = checkResult ? "redirect:/member/myInfo" : "/member/beforeMyInfo";
+    	} catch (Exception e) {
+    		e.printStackTrace();
+		}
+    	
+    	return goPage;
     }
     
     @GetMapping("/myInfo")
