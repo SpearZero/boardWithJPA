@@ -125,7 +125,37 @@ public class MemberController {
     }
     
     @PostMapping("/myInfo")
-    public ResponseEntity<String> postMyInfo(HttpServletRequest request, @RequestBody Member member) {
-    	return memberService.changeMyInfo(request, member);
+    public ResponseEntity<String> modifyMyInfo(HttpServletRequest request, @RequestBody Member member) {
+    	ResponseEntity<String> entity = null;
+    	String result = "fail";
+    	
+    	try { 
+    		HttpSession session = request.getSession(false);
+    		
+    		if(session == null) {
+    			return new ResponseEntity<String>(result, HttpStatus.OK);
+    		}
+    		
+    		Member sessionMember = (Member)session.getAttribute("member");
+    		
+    		Member updateMember = memberService.findMember(sessionMember.getId()).orElse(null);
+    		if(updateMember == null) {
+    			return new ResponseEntity<String>(result, HttpStatus.OK);
+    		}
+    		
+    		String userName = member.getUsername();
+    		Boolean checkResult = userName.equals(sessionMember.getUsername());
+    		if(checkResult) {
+    			memberService.updateMember(updateMember, member);
+    		}
+    		
+    		result = "success";
+    		entity = new ResponseEntity<String>(result, HttpStatus.OK);
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		entity = new ResponseEntity<String>("error", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    	
+    	return entity;
     }
 }
