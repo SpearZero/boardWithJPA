@@ -69,65 +69,8 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public ResponseEntity<String> doLogin(HttpSession session, Member member) {
-		ResponseEntity<String> entity = null;
-		Optional<Member> memberOpt = memberRepository.findByUsernameAndPassword(member.getUsername(), member.getPassword());
-		
-		try {
-			boolean isLoginResult = memberOpt.isPresent();
-			
-			if(isLoginResult) {
-				Member sessionMember = memberOpt.get();
-				sessionMember.setPassword("");
-				session.setAttribute("member", sessionMember);
-			}
-			
-			session.setAttribute("isLogin", isLoginResult);
-			entity = new ResponseEntity<String>(String.valueOf(isLoginResult), HttpStatus.OK);
-		} catch(Exception e) {
-			entity = new ResponseEntity<String>("error", HttpStatus.INTERNAL_SERVER_ERROR);
-			e.printStackTrace();
-		}
-		
-		return entity;
-	}
-
-	@Override
-	public void doLogout(HttpServletRequest request) {
-		try {
-			HttpSession session = request.getSession(false);
-			
-			if(session != null) {
-				session.invalidate();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public String checkMyInfo(HttpServletRequest request, String password) {
-		String goPage = "/";
-		
-		try {
-			HttpSession session = request.getSession(false);
-			
-			// 세션이 없는 경우에 대한 코드 추가(나중에는 공통적으로 관리)
-			if(session != null) {
-				// 세션에 "member"가 없는 상황도 고려해야 함
-				Member sessionMember = (Member)session.getAttribute("member");
-				
-				Optional<Member> optMember = memberRepository.findById(sessionMember.getId());
-				
-				Boolean checkResult = password.equals(optMember.get().getPassword());
-				
-				goPage = checkResult ? "redirect:/member/myInfo" : "/member/beforeMyInfo";
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return goPage;
+	public Optional<Member> findUserUsingNamePassword(String username, String password) {
+		return memberRepository.findByUsernameAndPassword(username, password);
 	}
 
 	@Override
