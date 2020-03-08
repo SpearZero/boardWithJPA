@@ -20,7 +20,7 @@ public interface MemberService {
 	
 	public Optional<Member> findUserUsingNamePassword(String username, String password);
 	
-	public ResponseEntity<String> changeMyInfo(HttpServletRequest request, Member member);
-	
 	public Optional<Member> findMember(Long id);
+	
+	public void updateMember(Member updateMember, Member member);
 }

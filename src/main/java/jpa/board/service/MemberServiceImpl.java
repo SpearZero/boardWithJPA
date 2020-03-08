@@ -72,40 +72,12 @@ public class MemberServiceImpl implements MemberService{
 	public Optional<Member> findUserUsingNamePassword(String username, String password) {
 		return memberRepository.findByUsernameAndPassword(username, password);
 	}
-
-	@Override
-	public ResponseEntity<String> changeMyInfo(HttpServletRequest request, Member member) {
-		ResponseEntity<String> entity = null;
-		String result = "fail";
-		
-		try {
-			HttpSession session = request.getSession(false);
-			
-			if(session != null) {
-				Member sessionMember = (Member)session.getAttribute("member");
-				String userName = member.getUsername();
-				
-				Boolean checkResult = userName.equals(sessionMember.getUsername());
-				
-				if(checkResult) {
-					String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-					Member updateMember = memberRepository.findById(sessionMember.getId()).get();
-					updateMember.setModifiedDate(date);
-					updateMember.setPassword(member.getPassword());
-					memberRepository.save(updateMember);
-					
-					result = "success";
-				}
-				
-			}
-			
-			entity = new ResponseEntity<String>(result, HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			entity = new ResponseEntity<String>("error", HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
-		return entity;
+	
+	public void updateMember(Member updateMember, Member member) {
+		String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		updateMember.setModifiedDate(date);
+		updateMember.setPassword(member.getPassword());
+		memberRepository.save(updateMember);
 	}
 
 	@Override
