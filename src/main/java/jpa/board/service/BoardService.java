@@ -27,7 +27,5 @@ public interface BoardService {
 	
 	public void writeBoardContent(Member member, Content content);
 	
-	public String setUpdateBoardContent(HttpServletRequest request, Model model);
-	
-	public String updateBoardContent(HttpServletRequest request);
+	public void updateBoardContent(Board board, Content content);
 }

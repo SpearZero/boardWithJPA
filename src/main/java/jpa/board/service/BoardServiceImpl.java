@@ -131,119 +131,17 @@ public class BoardServiceImpl implements BoardService {
 		
 		boardRepo.save(board);
 	}
-	
-//	@Override
-//	public String postWriteBoard(HttpServletRequest request) {
-//		String goPage = "redirect:/board";
-//		String title = request.getParameter("title");
-//		String content = request.getParameter("content");
-//		
-//		try {
-//			HttpSession session = request.getSession(false);
-//			
-//			if(session != null) {
-//				Member sessionMember = (Member)request.getSession().getAttribute("member");
-//				
-//				if(sessionMember != null) {
-//					Optional<Member> optMember = memberRepo.findById(sessionMember.getId());
-//					
-//					if(optMember.isPresent()) {
-//						Member member = optMember.get();
-//						
-//						Board board = new Boardd();
-//						board.setTitle(title);
-//						board.setContent(content);
-//						
-//						String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-//						board.setCreatedDate(date);
-//						board.setModifiedDate(date);
-//						board.setMember(member);
-//						
-//						boardRepo.save(board);
-//					}
-//				}
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		
-//		return goPage;
-//	}
 
 	@Override
-	public String setUpdateBoardContent(HttpServletRequest request, Model model) {
-		String page = StringUtils.isEmpty(request.getParameter("page")) ? "1" : request.getParameter("page");
-		String goPage = "redirect:/board?page="+page;
+	public void updateBoardContent(Board board, Content content) {
+		String modTitle = content.getTitle();
+		String modContent = content.getContent();
 		
-		try {
-			String getSeq = request.getParameter("seq");
-			Long seq = 0L;
-			
-			if(!StringUtils.isEmpty(getSeq)) {
-				seq = Long.parseLong(getSeq);
-			}
-			
-			Optional<Board> boardOpt = boardRepo.findById(seq);
-			
-			if(boardOpt.isPresent()) {
-				Board board = boardOpt.get();
-				model.addAttribute("board", board);
-				
-				Member member = (Member)request.getSession().getAttribute("member");
-				if(member != null) {
-					boolean writer = member.getId() == board.getMember().getId();
-					model.addAttribute("writer", writer);
-				}
-				
-				model.addAttribute("page", page);
-				goPage = "/board/updateBoard";
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+		board.setTitle(modTitle);
+		board.setContent(modContent);
+		String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		board.setModifiedDate(date);
 		
-		return goPage;
-	}
-
-	@Override
-	public String updateBoardContent(HttpServletRequest request) {
-		String page = StringUtils.isEmpty(request.getParameter("page")) ? "1" : request.getParameter("page");
-		String goPage = "redirect:/board?page="+page;
-		
-		try {
-			String getSeq = request.getParameter("seq");
-			Long seq = 0L;
-			
-			if(!StringUtils.isEmpty(getSeq)) {
-				seq = Long.parseLong(getSeq);
-			}
-			
-			Optional<Board> boardOpt = boardRepo.findById(seq);
-			
-			if(boardOpt.isPresent()) {
-				Board board = boardOpt.get();
-				
-				Member member = (Member)request.getSession().getAttribute("member");
-				if(member != null) {
-					boolean writer = member.getId() == board.getMember().getId();
-					
-					if(writer) {
-						String title = request.getParameter("title");
-						String content = request.getParameter("content");
-						
-						board.setTitle(title);
-						board.setContent(content);
-						String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-						board.setModifiedDate(date);
-						
-						boardRepo.save(board);
-					}
-				}
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-		return goPage;
+		boardRepo.save(board);
 	}
 }

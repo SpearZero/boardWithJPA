@@ -73,8 +73,7 @@ public class BoardController {
     	String goPage = "redirect:/board?page="+page;
     	
     	try {
-    		Optional<Board> boardOpt = boardService.getBoard(seq);
-    		Board board = boardOpt.orElse(null);
+    		Board board = boardService.getBoard(seq).orElse(null);
     		
     		if(board == null) {
     			return goPage;
@@ -100,8 +99,7 @@ public class BoardController {
     	String goPage = "redirect:/board?page="+page;
     	
     	try {
-    		Optional<Board> boardOpt = boardService.getBoard(seq);
-    		Board board = boardOpt.orElse(null);
+    		Board board = boardService.getBoard(seq).orElse(null);
     		
     		if(board == null) {
     			return goPage;
@@ -153,8 +151,7 @@ public class BoardController {
 				return goPage;
 			}
 			
-			Optional<Member> optMember = meberService.findMember(sessionMember.getId());
-			Member member = optMember.orElse(null);
+			Member member = meberService.findMember(sessionMember.getId()).orElse(null);
 			
 			if(member == null) {
 				return goPage;
@@ -171,11 +168,57 @@ public class BoardController {
     
     @GetMapping("/update")
     public String getUpdateBoard(HttpServletRequest request, Model model) {
-    	return boardService.setUpdateBoardContent(request, model);
+    	String page = ParameterUtils.getReqParameter(request, "page", "1");
+    	String seq = ParameterUtils.getReqParameter(request, "seq", "-1");
+    	String goPage = "redirect:/board?page="+page;
+    	
+    	try {
+    		Board board = boardService.getBoard(seq).orElse(new Board());
+    		
+    		Member member = Optional.ofNullable((Member)request.getSession().getAttribute("member")).orElse(null);
+    		
+    		if(member == null) {
+    			return goPage;
+    		}
+    		
+    		boolean writer = member.getId() == board.getMember().getId();
+    		
+    		model.addAttribute("board", board);
+    		model.addAttribute("writer", writer);
+    		model.addAttribute("page", page);
+    		
+    		goPage = "/board/updateBoard";
+    	} catch (Exception e) {
+    		e.printStackTrace();
+		}
+    	
+    	return goPage;
     }
     
     @PostMapping("/update/boardContent")
-    public String postUpdateBoard(HttpServletRequest request) {
-    	return boardService.updateBoardContent(request);
+    public String postUpdateBoard(HttpServletRequest request, @ModelAttribute Content content) {
+    	String page = ParameterUtils.getReqParameter(request, "page", "1");
+    	String seq = ParameterUtils.getReqParameter(request, "seq", "-1");
+    	String goPage = "redirect:/board?page="+page;
+    	
+    	try {
+    		Board board = boardService.getBoard(seq).orElse(new Board());
+    		
+    		Member member = Optional.ofNullable((Member)request.getSession().getAttribute("member")).orElse(null);
+    		
+    		if(member == null) {
+    			return goPage;
+    		}
+    		
+    		boolean writer = member.getId() == board.getMember().getId();
+    		
+    		if(writer) {
+    			boardService.updateBoardContent(board, content);
+    		}
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return goPage;
     }
 }
