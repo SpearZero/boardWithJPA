@@ -27,6 +27,12 @@ public class Board {
 	@JoinColumn(name = "id")
 	private Member member;
 	
+	public Board() {}
+
+	public Board(Long seq) {
+		this.seq = seq;
+	}
+
 	public Long getSeq() {
 		return seq;
 	}

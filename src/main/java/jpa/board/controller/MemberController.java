@@ -54,9 +54,8 @@ public class MemberController {
     	HttpSession session = request.getSession();
     	
     	try {
-    		Member findMember = memberService.findUserUsingNamePassword(member.getUsername(), member.getPassword()).orElse(null);
-    		
-    		boolean isLoginResult = findMember == null ? false : true;
+    		Member findMember = memberService.findUserUsingNamePassword(member.getUsername(), member.getPassword()).orElse(new Member(-1L));
+    		boolean isLoginResult = findMember.getId() > -1 ? true : false;
     		
     		if(isLoginResult) {
     			findMember.setPassword("");
@@ -138,8 +137,8 @@ public class MemberController {
     		
     		Member sessionMember = (Member)session.getAttribute("member");
     		
-    		Member updateMember = memberService.findMember(sessionMember.getId()).orElse(null);
-    		if(updateMember == null) {
+    		Member updateMember = memberService.findMember(sessionMember.getId()).orElse(new Member(-1L));
+    		if(updateMember.getId() > -1) {
     			return new ResponseEntity<String>(result, HttpStatus.OK);
     		}
     		

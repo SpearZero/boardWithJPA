@@ -28,6 +28,12 @@ public class Member {
 	@Column
 	private String modifiedDate;
 	
+	public Member() {}
+
+	public Member(Long id) {
+		this.id = id;
+	}
+
 	public Long getId() {
 		return id;
 	}

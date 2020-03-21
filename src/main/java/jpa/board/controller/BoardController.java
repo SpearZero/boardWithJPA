@@ -73,13 +73,11 @@ public class BoardController {
     	String goPage = "redirect:/board?page="+page;
     	
     	try {
-    		Board board = boardService.getBoard(seq).orElse(null);
-    		
-    		if(board == null) {
-    			return goPage;
-    		}
-    		
+    		Board board = boardService.getBoard(seq).orElse(new Board());
     		Member member = Optional.ofNullable((Member)request.getSession().getAttribute("member")).orElse(new Member());
+    		
+    		System.out.println(member.getId() + " : " + board.getMember().getId());
+    		
     		model.addAttribute("writer", member.getId() == board.getMember().getId());
     		model.addAttribute("board", board);
     		model.addAttribute("page", page);
@@ -99,11 +97,7 @@ public class BoardController {
     	String goPage = "redirect:/board?page="+page;
     	
     	try {
-    		Board board = boardService.getBoard(seq).orElse(null);
-    		
-    		if(board == null) {
-    			return goPage;
-    		}
+    		Board board = boardService.getBoard(seq).orElse(new Board());
     		
     		Member member = Optional.ofNullable((Member)request.getSession().getAttribute("member")).orElse(new Member());
     		boardService.deleteBoardContent(board, member);
@@ -123,8 +117,8 @@ public class BoardController {
     		HttpSession session = request.getSession(false);
     		
     		if(session != null) {
-    			Member member = Optional.ofNullable((Member)request.getSession().getAttribute("member")).orElse(null);
-    			goPage = member != null ? "board/writeBoard" : goPage;
+    			Member member = Optional.ofNullable((Member)request.getSession().getAttribute("member")).orElse(new Member(-1L));
+    			goPage = member.getId() > -1 ? "board/writeBoard" : goPage;
     		}
     	} catch (Exception e) {
     		e.printStackTrace();
@@ -145,18 +139,8 @@ public class BoardController {
     			return goPage;
     		}
     		
-			Member sessionMember = Optional.ofNullable((Member)request.getSession().getAttribute("member")).orElse(null);
-			
-			if(sessionMember == null) {
-				return goPage;
-			}
-			
-			Member member = meberService.findMember(sessionMember.getId()).orElse(null);
-			
-			if(member == null) {
-				return goPage;
-			}
-			
+			Member sessionMember = Optional.ofNullable((Member)request.getSession().getAttribute("member")).orElse(new Member());
+			Member member = meberService.findMember(sessionMember.getId()).orElse(new Member());
 			boardService.writeBoardContent(member, content);
     	} catch (Exception e) {
     		e.printStackTrace();
@@ -175,12 +159,7 @@ public class BoardController {
     	try {
     		Board board = boardService.getBoard(seq).orElse(new Board());
     		
-    		Member member = Optional.ofNullable((Member)request.getSession().getAttribute("member")).orElse(null);
-    		
-    		if(member == null) {
-    			return goPage;
-    		}
-    		
+    		Member member = Optional.ofNullable((Member)request.getSession().getAttribute("member")).orElse(new Member());
     		boolean writer = member.getId() == board.getMember().getId();
     		
     		model.addAttribute("board", board);
@@ -203,13 +182,7 @@ public class BoardController {
     	
     	try {
     		Board board = boardService.getBoard(seq).orElse(new Board());
-    		
-    		Member member = Optional.ofNullable((Member)request.getSession().getAttribute("member")).orElse(null);
-    		
-    		if(member == null) {
-    			return goPage;
-    		}
-    		
+    		Member member = Optional.ofNullable((Member)request.getSession().getAttribute("member")).orElse(new Member());
     		boolean writer = member.getId() == board.getMember().getId();
     		
     		if(writer) {
